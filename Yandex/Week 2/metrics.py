@@ -7,19 +7,19 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import scale
 
 
-biggest_num = -100
-best_k = -100
+biggest_num = 0
+best_k = 0
 
 def compare_biggest(i, num):
     global biggest_num 
     global best_k
 
-    if biggest_num < num:
+    if biggest_num < num or best_k == 0:
         biggest_num = num
         best_k = i
 
 def print_formated(k, num):
-    print("#{0}".format(k), format(num,'.2f'))
+    print("#{0}".format(k), format(num,'.1f'))
 
 
 dataset = skd.load_boston() 
@@ -29,6 +29,7 @@ Y = dataset.target
 
 kfolds = KFold(len(Y), n_folds=5, shuffle=True, random_state=42)
 samples = np.linspace(1, 10, num=200)
+
 
 for i in samples:
     clf = KNeighborsRegressor(n_neighbors=5, p=i, metric='minkowski', weights='distance')
@@ -41,3 +42,4 @@ print('Best:', end='')
 print_formated(best_k, biggest_num)
 
 #9.50251256281407 -21.11
+#1.0 -16.05
