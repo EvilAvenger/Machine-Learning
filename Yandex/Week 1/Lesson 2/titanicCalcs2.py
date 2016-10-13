@@ -19,11 +19,9 @@ data['Sex'] = data['Sex'].replace('male', 1)
 data = data.dropna(axis=0)
 
 
-
 y = np.array(data['Survived'])
 del data['Survived']
 
-print(data)
 X = np.array(data)
 
 clf = DecisionTreeClassifier(random_state=241)
