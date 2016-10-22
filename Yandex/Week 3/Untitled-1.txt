@@ -1,0 +1,106 @@
+
+#!/usr/bin/python3
+
+__author__ = "Vitaly Bibikov"
+__version__ = "0.1"
+
+import math
+import random
+import sys
+
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
+
+
+def __main__():
+    np.set_printoptions(suppress=True)
+    data = pd.read_csv('D:\\Dropbox\\Study\\Programming\\Coursera\\Machine-Learning\\Yandex\\Week 3\\data\\data-logistic.csv', names=None, header=None)
+
+    data = data.as_matrix().astype(float)
+    lr = LogicalRegression(C=10, step = 0.1, iterations = 10000)
+
+    X = data[:, 1:]
+    y = data[:, 0]
+
+    # X = [[1,2], [3,4]]
+    # y = [1,2]
+
+    lr.fit(X,y)
+
+    return
+
+class LogicalRegression(object):
+
+    def __init__(self, C, step, iterations):
+        self.C = C
+        self.k = step
+        self.weights = []
+        self.length = 0
+        self.iterations = iterations
+
+    def fit(self, X, y):
+        self.__initialize(X, y)
+
+        for i in range(0, self.iterations + 1):
+            self.__process()
+            for i in range(0, len(self.weights[0])):
+                self.__reweight(i)
+            print(self.weights)    
+
+
+    def __get_next_object_pair(self, xVector, yVector, wVector):
+        error = self.__count_error(xVector, yVector, wVector)
+        result = math.log10(error)
+        return result
+
+    def __count_error(self, xVector, yVector, wVector):
+        elements = sum(np.multiply(xVector, wVector))
+        #elements = sum([x * w for x, w in zip(list(xVector), wVector)])
+        margin = elements * -yVector
+        return math.exp(margin + 1)
+
+    def __reweight(self, index):
+        result = 0
+        for i in range(0, self.length):
+            error = 1 - (1 / (1 + self.__count_error(self.x[i], self.y[i], self.weights[i])))
+            error = error * self.y[i] * self.x[i][index]
+            result = result + error
+
+        formula = self.weights[index] + (self.k / self.length) * result
+        coef = self.k * self.C * self.weights[index]
+        self.weights[index] = formula - coef
+
+
+    def __initialize(self, X, y):
+        self.x = X
+        self.y = y
+        self.length = X.shape[0]
+        self.weights = [[0] * X.shape[1]] * self.length
+
+    def __process(self):
+
+        result = 0
+        for i in range(0, self.length):
+            result = result + self.__get_next_object_pair(self.x[i], self.y[i], self.weights[i])
+
+        result = result / self.length
+        #result = self.__L2_make_regularization(result)
+        return result
+
+    def __L2_make_regularization(self, result):
+        result = result + (0.5 * self.C * sum([w*w for w in self.weights]))
+        return result
+
+
+
+
+
+
+
+
+
+
+if __name__ == '__main__':
+     __main__()

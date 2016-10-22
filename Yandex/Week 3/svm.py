@@ -13,7 +13,7 @@ X = data[:,1:]
 Y = data[0:, 0]
 
 
-classifier = SVC(C=100000, random_state=241, kernel='linear',)
+classifier = SVC(C=100000, random_state=241, kernel='linear')
 classifier.fit(X,Y)
 
 print(data)
