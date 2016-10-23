@@ -17,7 +17,7 @@ def __main__():
     X = data[:, 1:]
     y = data[:, 0]
 
-    lr = LogicalRegression(C=10, step=0.1, itertations=10000, l2_regularize=True) 
+    lr = LogicalRegression(C=10, step=0.1, max_iter=10000, l2_regularize=True) 
     lr.fit(X,y)
 
     result = lr.get_probabilities()
@@ -28,10 +28,10 @@ def __main__():
 
 class LogicalRegression(object):
 
-    def __init__(self, C, step, itertations, l2_regularize):
+    def __init__(self, C, step, max_iter, l2_regularize):
         self.C = C
         self.k = step
-        self.itertations = itertations
+        self.max_iter = max_iter
         self.l2_regularize = l2_regularize
         return
 
@@ -44,7 +44,7 @@ class LogicalRegression(object):
         self.weights = [0.1] * x.shape[1]
         is_ready = False
         
-        for i in range(0, self.itertations + 1):
+        for i in range(0, self.max_iter + 1):
 
             if is_ready:
                 break
