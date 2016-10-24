@@ -89,7 +89,7 @@ def get_precision_recall_max():
     score_knn = get_concrete_precision(y_true, score_knn)
     score_tree = get_concrete_precision(y_true, score_tree)
     results = print_max(score_logreg, score_svm, score_knn, score_tree)
-    
+
     return results
 
 def get_concrete_precision(y_true,score):
@@ -109,7 +109,6 @@ def get_class(data):
     data = data[0] + data[1]
     data = swicth(data)
     return data
-
 
 def print_max(score_logreg, score_svm, score_knn, score_tree):
     results = {'score_logreg' : score_logreg, 'score_svm': score_svm, 'score_knn' : score_knn, 'score_tree':score_tree}
