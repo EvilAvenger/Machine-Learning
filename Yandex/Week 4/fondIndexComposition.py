@@ -1,5 +1,5 @@
 from sklearn.decomposition import PCA
-from principalComponentAnalysis import DataLoader
+from dataloader import DataLoader
 
 import numpy as np
 import pandas as pd
