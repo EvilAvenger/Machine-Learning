@@ -42,7 +42,7 @@ def train_random_forest(X, y, n_trees, ):
     folds = KFold(n=len(y), shuffle=True, random_state=1, n_folds=5)
     forest = RandomForestRegressor(random_state=1, n_estimators=n_trees)
 
-    #clf = forest.fit(X, y)
+    #clf = forest.fit(X, y) # version 1 of realization
     # scores = cross_val_score(estimator=clf, cv=folds, X=X, y=y)
    
     scores = []
@@ -53,7 +53,9 @@ def train_random_forest(X, y, n_trees, ):
         predictions = forest.predict(X_test)
         scores.append(r2_score(y_true = Y_test, y_pred = predictions))
 
-    return np.mean(scores)
+    scores = np.mean(scores)
+    
+    return scores
 
 
 
