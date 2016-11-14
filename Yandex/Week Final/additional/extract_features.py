@@ -5,6 +5,7 @@ import json
 import pandas
 import collections
 import argparse
+import sys
 
 
 def last_value(series, times, time_point=60*5):
@@ -123,7 +124,7 @@ def iterate_matches(matches_filename):
             match = json.loads(line)
             yield match
             if (n+1) % 1000 == 0:
-                print 'Processed %d matches' % (n+1)
+                print('Processed %d matches' % (n+1))
 
                 
 def create_table(matches_filename, time_point):
@@ -134,13 +135,15 @@ def create_table(matches_filename, time_point):
         if fields is None:
             fields = features.keys()
             df = {key: [] for key in fields}    
-        for key, value in features.iteritems():
+        for key, value in list(features.items()):
             df[key].append(value)
     df = pandas.DataFrame.from_records(df).ix[:, fields].set_index('match_id').sort_index()
     return df
 
 
 if __name__ == '__main__':
+    sys.argv.append('features.zip')
+    sys.argv.append('extracted_features.csv')
     parser = argparse.ArgumentParser(description='Extract features from matches data')
     parser.add_argument('input_matches')
     parser.add_argument('output_csv')
